@@ -1,0 +1,24 @@
+{
+  "name": "caravan_online",
+  "version": "1.0.0",
+  "description": "An online version of the card game Caravan from Fallout New Vegas",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js 3000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Emilurenius/Caravan-Online.git"
+  },
+  "author": "Emil Christiansen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Emilurenius/Caravan-Online/issues"
+  },
+  "homepage": "https://github.com/Emilurenius/Caravan-Online#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "http": "0.0.1-security",
+    "socket.io": "^4.4.0"
+  }
+}
