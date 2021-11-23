@@ -20,7 +20,7 @@ if (!port) {
 console.log(`${port} registered as server port`)
 // Reading input from terminal end
 
-var sessions = {}
+var sessions = {} // Dictionary of all active sessions
 
 app.use(cors()) // Making sure the browser can request more data after it is loaded on the client computer.
 app.use(express.urlencoded({extended:false}))
