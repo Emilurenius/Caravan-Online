@@ -41,19 +41,21 @@ io.on('connection', async (socket) => {
     socket.broadcast.emit("chat message", `user ${users[socket.id]} has connected`)
     users[socket.id] = socket.id
     console.log(`User ${socket.id} has been added as ${users[socket.id]}`)
-
+    console.log(`User ${socket.id} has been added as ${users[socket.id]['name']}`)
+    
     socket.on("chat message", (msg) => {
         console.log(`Message: ${msg}`)
         io.emit("chat message", `${users[socket.id]}: ${msg}`)
+        io.emit("chat message", `${users[socket.id]['name']}: ${msg}`)
     })
 
     socket.on('disconnect', () => {
-        console.log(`User ${users[socket.id]} disconnected`)
-        socket.broadcast.emit("chat message", `${users[socket.id]} has disconnected`)
+        console.log(`User ${users[socket.id]['name']} disconnected`)
+        socket.broadcast.emit("chat message", `${users[socket.id]['name']} has disconnected`)
     })
 
     socket.on('changeName', (name) => {
-        users[socket.id] = name
+        users[socket.id]['name'] = name
     })
 
     //Event when user clicks the play button after giving a roomname
