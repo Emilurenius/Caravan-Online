@@ -16,11 +16,11 @@ form.addEventListener('submit', (e) => {
 
 nameButton.addEventListener('click', (e) => {
     e.preventDefault()
+    console.log(`user ${users[socket.id]} changed name to ${nameInput.value}`)
     socket.emit('changeName', nameInput.value)
-
 })
 
-cket.on("chat message", (msg) => {
+socket.on("chat message", (msg) => {
     const item = document.createElement('li')
     item.textContent = msg
     messages.appendChild(item)
