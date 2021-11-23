@@ -28,7 +28,7 @@ app.use("/static", express.static("public"))
 app.use("/assets", express.static("assets"))
 
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, '/html/joinRoom.html'))
+    res.sendFile(path.join(__dirname, '/html/index.html'))
 })
 
 // Socket is basically user link
