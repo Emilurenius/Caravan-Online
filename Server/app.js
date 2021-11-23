@@ -31,18 +31,22 @@ app.get("/", (req, res) => {
 // Socket is basically user link
 
 io.on('connection', async (socket) => {
-    const userId = await fetchUserId(socket);
-    console.log(`User ${userID} has joined`)
-    socket.broadcast.emit("chat message", `user ${userID} has connected`)
-    users[socketId] = "testname"
+    console.log(`User ${socket.id} has joined`)
+    socket.broadcast.emit("chat message", `user ${users[socket.id]} has connected`)
+    users[socket.id] = socket.id
+    console.log(`User ${socket.id} has been added as ${users[socket.id]}`)
     socket.on("chat message", (msg) => {
         console.log(`Message: ${msg}`)
-        io.emit("chat message", `${userID}: ${msg}`)
+        io.emit("chat message", `${users[socket.id]}: ${msg}`)
     })
 
     socket.on('disconnect', () => {
-        console.log(`User ${userID} disconnected`)
-        socket.broadcast.emit("chat message", "A user has disconnected")
+        console.log(`User ${users[socket.id]} disconnected`)
+        socket.broadcast.emit("chat message", `${users[socket.id]} has disconnected`)
+    })
+
+    socket.on('changeName', (name) => {
+        users[socket.id] = name
     })
 
     //Event when user clicks the play button after giving a roomname
