@@ -13,7 +13,10 @@ const rooms = io.of("/").adapter.rooms;
 const sids = io.of("/").adapter.sids;
 
 // Reading input from terminal start
-const port = parseInt(process.argv[2])
+var port = parseInt(process.argv[2])
+if (!port) {
+    port = 3000
+}
 console.log(`${port} registered as server port`)
 // Reading input from terminal end
 
@@ -38,7 +41,7 @@ io.on('connection', async (socket) => {
     socket.broadcast.emit("chat message", `user ${users[socket.id]} has connected`)
     users[socket.id] = socket.id
     console.log(`User ${socket.id} has been added as ${users[socket.id]}`)
-    
+
     socket.on("chat message", (msg) => {
         console.log(`Message: ${msg}`)
         io.emit("chat message", `${users[socket.id]}: ${msg}`)
