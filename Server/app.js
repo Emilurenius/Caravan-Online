@@ -17,12 +17,15 @@ const port = parseInt(process.argv[2])
 console.log(`${port} registered as server port`)
 // Reading input from terminal end
 
+var sessions = {}
+
 app.use(cors()) // Making sure the browser can request more data after it is loaded on the client computer.
 app.use(express.urlencoded({extended:false}))
 //app.use(cookieParser()) // Middleware for handling cookies
 //app.use(upload()) // Fileupload system
 
 app.use("/static", express.static("public"))
+app.use("/assets", express.static("assets"))
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, '/html/index.html'))
@@ -35,6 +38,7 @@ io.on('connection', async (socket) => {
     socket.broadcast.emit("chat message", `user ${users[socket.id]} has connected`)
     users[socket.id] = socket.id
     console.log(`User ${socket.id} has been added as ${users[socket.id]}`)
+    
     socket.on("chat message", (msg) => {
         console.log(`Message: ${msg}`)
         io.emit("chat message", `${users[socket.id]}: ${msg}`)
