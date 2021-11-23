@@ -58,6 +58,10 @@ io.on('connection', async (socket) => {
         users[socket.id]['name'] = name
     })
 
+    socket.on("privateMessage", (msg) => {
+        io.sockets.to(Object.keys(users)[0]).emit('chat message', msg)
+    })
+
     //Event when user clicks the play button after giving a roomname
     // socket.on('joinRoom', () => {
     //     console.log("User joined a room")
