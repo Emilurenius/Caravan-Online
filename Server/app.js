@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
 
 // Socket is basically user link
 
-io.on('connection', (socket) => {
+io.on('connection', async (socket) => {
     const userId = await fetchUserId(socket);
     console.log(`User ${userID} has joined`)
     socket.broadcast.emit("chat message", `user ${userID} has connected`)
@@ -56,6 +56,6 @@ io.on('connection', (socket) => {
     //     }
     //     socket.join(room)
     // })
-}
+})
 
 server.listen(port, () => {console.log(`listening on ${port}`)})
