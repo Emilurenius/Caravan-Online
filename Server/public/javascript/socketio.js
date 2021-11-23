@@ -1,11 +1,19 @@
 const socket = io()
 
-const form = document.getElementById('form')
+const messageForm = document.getElementById("messageForm")
+const changeNameForm = document.getElementById("changeNameForm")
+
+const submitButton = document.getElementById('submitButton')
 const input = document.getElementById('input')
 const nameInput = document.getElementById('name')
 const nameButton = document.getElementById('nameChangeButton')
+var name = ''
 
-form.addEventListener('submit', (e) => {
+socket.on('connect', () => {
+    name = socket.id
+})
+
+messageForm.addEventListener('submit', (e) => {
     e.preventDefault()
     if (input.value) {
         socket.emit("chat message", input.value)
@@ -13,11 +21,14 @@ form.addEventListener('submit', (e) => {
     }
 })
 
-
-nameButton.addEventListener('click', (e) => {
+changeNameForm.addEventListener('submit', (e) => {
     e.preventDefault()
-    console.log(`user ${users[socket.id]} changed name to ${nameInput.value}`)
-    socket.emit('changeName', nameInput.value)
+    if (nameInput.value) {
+        socket.emit("changeName", nameInput.value)
+        console.log(`${name} changed name to ${nameInput.value}`)
+        name = nameInput.value
+        nameInput.value = ''
+    }
 })
 
 socket.on("chat message", (msg) => {

@@ -38,8 +38,9 @@ app.get("/", (req, res) => {
 
 io.on('connection', async (socket) => {
     console.log(`User ${socket.id} has joined`)
+    users[socket.id] = {}
+    users[socket.id]['name'] = socket.id
     socket.broadcast.emit("chat message", `user ${users[socket.id]['name']} has connected`)
-    users[socket.id] = socket.id
     console.log(`User ${socket.id} has been added as ${users[socket.id]['name']}`)
     
     socket.on("chat message", (msg) => {
@@ -53,6 +54,7 @@ io.on('connection', async (socket) => {
     })
 
     socket.on('changeName', (name) => {
+        console.log(`${users[socket.id]['name']} changed to ${name}`)
         users[socket.id]['name'] = name
     })
 
