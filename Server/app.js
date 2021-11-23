@@ -38,14 +38,12 @@ app.get("/", (req, res) => {
 
 io.on('connection', async (socket) => {
     console.log(`User ${socket.id} has joined`)
-    socket.broadcast.emit("chat message", `user ${users[socket.id]} has connected`)
+    socket.broadcast.emit("chat message", `user ${users[socket.id]['name']} has connected`)
     users[socket.id] = socket.id
-    console.log(`User ${socket.id} has been added as ${users[socket.id]}`)
     console.log(`User ${socket.id} has been added as ${users[socket.id]['name']}`)
     
     socket.on("chat message", (msg) => {
         console.log(`Message: ${msg}`)
-        io.emit("chat message", `${users[socket.id]}: ${msg}`)
         io.emit("chat message", `${users[socket.id]['name']}: ${msg}`)
     })
 
