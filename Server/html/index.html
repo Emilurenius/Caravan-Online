@@ -17,15 +17,26 @@
   </head>
   <body>
     <ul id="messages"></ul>
+
     <div class="form">
       <form id="messageForm">
         <input id="input" autocomplete="off"/>
         <button id="submitButton">Send</button>
       </form>
+    
+      <div>hello</div>
+      <br>
+      <div>hello again</div>
       <form id="changeNameForm">
-        <input id="name" autocomplete="off"/>
+        <input id="nameInput" autocomplete="off"/>
         <button id="nameChangeButton">Change name</button>
       </form>
+
+      <form id="ConnectForm">
+        <input id="connectId" autocomplete="off"/>
+        <button id="connectButton">Connect</button>
+      </form>
+
     </div>
   </body>
   <script src='/socket.io/socket.io.js'></script>
