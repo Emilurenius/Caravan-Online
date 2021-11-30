@@ -1,14 +1,20 @@
 const socket = io()
 
 const messageForm = document.getElementById("messageForm")
-const changeNameForm = document.getElementById("changeNameForm")
-
 const submitButton = document.getElementById('submitButton')
 const input = document.getElementById('input')
+
+const changeNameForm = document.getElementById("changeNameForm")
 const nameInput = document.getElementById('nameInput')
 const nameButton = document.getElementById('nameChangeButton')
 
-var name = ''
+const connectForm = document.getElementById("connectForm")
+const connectId = document.getElementById("connectId")
+const connectButton = document.getElementById("connectButton")
+
+const messages = document.getElementById("messages")
+
+var name = ""
 
 socket.on('connect', () => {
     name = socket.id
@@ -34,11 +40,27 @@ changeNameForm.addEventListener('submit', (e) => {
     }
 })
 
+connectForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+    if (connectId.value) {
+        socket.emit("connectToRoom", connectId.value)
+        console.log(`attempting to connect to room ${connectId.value}`)
+    }
+})
+
 socket.on("chat message", (msg) => {
     const item = document.createElement('li')
     item.textContent = msg
     messages.appendChild(item)
     window.scrollTo(0, document.body.scrollHeight)
+})
+
+socket.on("console log", (msg) => {
+    console.log(`log from server: ${msg}`)
+})
+
+socket.on("alert", (msg) => {
+    alert(msg)
 })
 
 function sendPrivateMessage(msg) {

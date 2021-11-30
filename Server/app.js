@@ -8,6 +8,7 @@ const { Server } = require('socket.io')
 const { captureRejectionSymbol } = require('events')
 const io = new Server(server)
 var users = {}
+var playerPairs = {}
 
 const rooms = io.of("/").adapter.rooms;
 const sids = io.of("/").adapter.sids;
@@ -44,7 +45,7 @@ io.on('connection', async (socket) => {
     console.log(`User ${socket.id} has been added as ${users[socket.id]['name']}`)
     
     socket.on("chat message", (msg) => {
-        console.log(`Message: ${msg}`)
+        console.log(`Message from ${users[socket.id]['name']}: ${msg}`)
         io.emit("chat message", `${users[socket.id]['name']}: ${msg}`)
     })
 
@@ -55,7 +56,30 @@ io.on('connection', async (socket) => {
 
     socket.on('changeName', (name) => {
         console.log(`${users[socket.id]['name']} changed to ${name}`)
+        socket.emit("chat message", `${users[socket.id]['name']} changed to ${name}`)
         users[socket.id]['name'] = name
+    })
+
+    socket.on('connectToRoom', (room) => {
+        if (!playerPairs[room]) {
+            playerPairs[room] = {}
+            playerPairs[room][0] = "dummyplayer"
+            console.log(`room did not exist, adding ${room} to it`)
+        }
+        
+        console.log(playerPairs)
+        console.log(`There are ${Object.keys(playerPairs[room]).length} players in ${room}`)
+
+        if (Object.keys(playerPairs[room]).length < 3) {
+            playerPairs[room][Object.keys(playerPairs[room]).length] = socket.id
+            console.log(`player ${users[socket.id]['name']} joined room ${room}`)
+            socket.emit("console log", "connection estalished")
+        }
+
+        else {
+            console.log(`player ${users[socket.id]['name']} attempted to join room ${room}, but was denied`)
+            socket.emit("alert", "Connection denied, room is full.")
+        }
     })
 
     socket.on("privateMessage", (msg) => {
