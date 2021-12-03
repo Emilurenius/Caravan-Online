@@ -14,10 +14,7 @@ const rooms = io.of("/").adapter.rooms;
 const sids = io.of("/").adapter.sids;
 
 // Reading input from terminal start
-var port = parseInt(process.argv[2])
-if (!port) {
-    port = 3000
-}
+const port = parseInt(process.argv[2]) || 3000
 console.log(`${port} registered as server port`)
 // Reading input from terminal end
 
